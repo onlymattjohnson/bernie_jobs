@@ -55,7 +55,7 @@ class GreenhousePage:
         print(self.soup.prettify())
     
     def to_csv(self):
-        self.jobs.to_csv(self.run_date + '.csv')
+        self.jobs.to_csv(self.run_date + '.csv', index=False)
 
 bernie_page = GreenhousePage('bernie2020')
 bernie_page.to_csv()
