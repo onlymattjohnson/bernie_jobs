@@ -25,5 +25,6 @@ class JobDate(Base):
   job_id = Column(Integer, ForeignKey('job.job_id'))
   date = Column(DATE)
 
-Job.__table__.create(bind = engine, checkfirst = True)
-JobDate.__table__.create(bind = engine, checkfirst = True)
+def create_db():
+  Job.__table__.create(bind = engine, checkfirst = True)
+  JobDate.__table__.create(bind = engine, checkfirst = True)
