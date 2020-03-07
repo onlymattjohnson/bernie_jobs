@@ -2,7 +2,8 @@
 import csv
 from datetime import datetime
 
-from create_db import *
+from models import *
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 jobs = []
 job_dates = []
@@ -30,11 +31,15 @@ Session = sessionmaker(bind = engine)
 session = Session()
 
 for job in jobs:
-  row = Job(**job)
-  session.add(row)
+  if not session.query(Job).filter(Job.job_id == job['job_id']).first():
+    row = Job(**job)
+    session.add(row)
 
 for jd in job_dates:
-  row = JobDate(**jd)
-  session.add(row)
+  if not session.query(JobDate).filter(JobDate.job_id == jd['job_id'], JobDate.date == jd['date']).first():
+    row = JobDate(**jd)
+    session.add(row)
+  else:
+    print(f"Job {jd['job_id']} for date {jd['date']} already exists.")
 
 session.commit()
